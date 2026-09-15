@@ -16,7 +16,7 @@ import {
 
 // Importación de componentes
 import Navbar from "./components/Navbar";
-import Login from "./components/Login";
+import Login from "./pages/Login";
 import Dashboard from "./components/Dashboard";
 import Inventario from "./components/Inventario";
 import FormularioProducto from "./components/FormularioProducto";
@@ -76,7 +76,7 @@ function AppContent() {
     } catch (err) {
       console.error("Error al cargar productos:", err);
       setError(
-        "No se pudieron cargar los productos. Verifica que el servidor JSON Server esté encendido en el puerto 5000."
+        "No se pudieron cargar los productos. Verifica tu conexión a internet o el estado de la API e intenta nuevamente."
       );
     } finally {
       setCargando(false);
@@ -170,6 +170,20 @@ function AppContent() {
             }
           />
 
+          {/* Vista 1B: Ruta /dashboard explícita solicitada por la actividad */}
+          <Route
+            path="/dashboard"
+            element={
+              <Dashboard
+                productos={productos}
+                cargando={cargando}
+                error={error}
+                usuario={usuario}
+                onReintentar={cargarProductos}
+              />
+            }
+          />
+
           {/* Vista 2: Gestión de Inventario */}
           <Route
             path="/inventario"
@@ -213,7 +227,7 @@ function AppContent() {
       </Route>
 
       {/* 3. Redirección por defecto */}
-      <Route path="*" element={<Navigate to="/" replace />} />
+      <Route path="*" element={<Navigate to="/dashboard" replace />} />
     </Routes>
   );
 }

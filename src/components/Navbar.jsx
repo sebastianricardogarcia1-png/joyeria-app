@@ -1,13 +1,23 @@
 // Archivo: src/components/Navbar.jsx
 // Barra de navegación superior con enlaces de ruta, información de usuario y botón de salida.
 
-import { Link, NavLink } from "react-router-dom";
+import { Link, NavLink, useLocation } from "react-router-dom";
 import { Gem, LayoutDashboard, Layers, PlusCircle, LogOut, User } from "lucide-react";
 
 export default function Navbar({ usuario, onLogout }) {
+  const location = useLocation();
+  const isDashboardActive = location.pathname === "/" || location.pathname === "/dashboard";
+
   const navLinkStyle = ({ isActive }) =>
     `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
       isActive
+        ? "bg-amber-500/15 text-amber-400 border border-amber-500/30 shadow-sm"
+        : "text-stone-300 hover:text-amber-400 hover:bg-[#26211c]"
+    }`;
+
+  const dashboardLinkStyle = () =>
+    `flex items-center gap-2 px-3 py-2 rounded-lg text-sm font-medium transition-all ${
+      isDashboardActive
         ? "bg-amber-500/15 text-amber-400 border border-amber-500/30 shadow-sm"
         : "text-stone-300 hover:text-amber-400 hover:bg-[#26211c]"
     }`;
@@ -17,7 +27,7 @@ export default function Navbar({ usuario, onLogout }) {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           {/* Logo */}
-          <Link to="/" className="flex items-center gap-2 group">
+          <Link to="/dashboard" className="flex items-center gap-2 group">
             <div className="p-2 bg-gradient-to-tr from-amber-600 to-yellow-400 rounded-xl text-stone-950 shadow-md group-hover:scale-105 transition-transform">
               <Gem className="w-5 h-5" />
             </div>
@@ -33,7 +43,7 @@ export default function Navbar({ usuario, onLogout }) {
 
           {/* Enlaces de Navegación */}
           <nav className="hidden md:flex items-center gap-1">
-            <NavLink to="/" end className={navLinkStyle}>
+            <NavLink to="/dashboard" className={dashboardLinkStyle}>
               <LayoutDashboard className="w-4 h-4" />
               <span>Dashboard</span>
             </NavLink>
@@ -71,7 +81,7 @@ export default function Navbar({ usuario, onLogout }) {
 
         {/* Barra Móvil */}
         <div className="flex md:hidden items-center justify-around py-2 border-t border-[#2e2621] gap-1">
-          <NavLink to="/" end className={navLinkStyle}>
+          <NavLink to="/dashboard" className={dashboardLinkStyle}>
             <LayoutDashboard className="w-4 h-4" />
             <span className="text-xs">Dashboard</span>
           </NavLink>

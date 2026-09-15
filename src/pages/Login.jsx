@@ -15,7 +15,7 @@ export default function Login({ onLogin }) {
 
   // Si ya está autenticado, redirigir al dashboard
   if (usuario) {
-    return <Navigate to="/" replace />;
+    return <Navigate to="/dashboard" replace />;
   }
 
   const handleSubmit = (e) => {
@@ -29,6 +29,20 @@ export default function Login({ onLogin }) {
 
     if (password.length < 4) {
       setError("La contraseña debe tener al menos 4 caracteres.");
+      return;
+    }
+
+    // Credenciales pedagógicas autorizadas
+    const CREDENCIALES_VALIDAS = {
+      email: "admin@joyeria.com",
+      password: "123456",
+    };
+
+    if (
+      email.trim().toLowerCase() !== CREDENCIALES_VALIDAS.email.toLowerCase() ||
+      password !== CREDENCIALES_VALIDAS.password
+    ) {
+      setError("Correo o contraseña incorrectos.");
       return;
     }
 
@@ -46,7 +60,7 @@ export default function Login({ onLogin }) {
       onLogin(datosUsuario);
     }
 
-    navigate("/", { replace: true });
+    navigate("/dashboard", { replace: true });
   };
 
   return (
